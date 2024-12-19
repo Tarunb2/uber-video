@@ -14,21 +14,22 @@ const userSchema = new mongoose.Schema({
             minlength: [3, 'Last name must be at least 3 characters long'],
         }
     },
-    email:{
+    email: {
         type: String,
         required: true,
-        unique: true,
+        unique: true, // Ensure email is unique
         minlength: [5, 'Email must be at least 5 characters long'],
     },
-    password:{
+    password: {
         type: String,
         required: true,
         select: false,
     },
-    sockeId: {
+    socketId: {
         type: String,
     }
-})
+});
+
 
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({_id : this._id}, process.env.JWT_SECRET)

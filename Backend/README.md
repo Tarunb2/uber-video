@@ -110,18 +110,150 @@ The request body should be a JSON object with the following structure:
 }
 ```
 
+### Example Response from Endpoint
+When a user registers successfully, the following is an example response:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+  "user": {
+    "_id": "64a6f76b8c1d5e001f3c1e3b",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+---
+
+# `/users/login` Endpoint Documentation
+
+## Description
+The `/users/login` endpoint allows existing users to log in by providing their email and password. Upon successful authentication, a JWT token is returned along with user details.
+
+---
+
+## Request
+
+### Method
+`POST`
+
+### URL
+`/users/login`
+
+### Headers
+- `Content-Type: application/json`
+
+### Request Body
+The request body should be a JSON object with the following structure:
+
+```json
+{
+  "email": "string (valid email format)",
+  "password": "string (min length: 6)"
+}
+```
+
+### Example Request Body
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "securePassword123"
+}
+```
+
+---
+
+## Response
+
+### Successful Response
+- **Status Code:** `200 OK`
+- **Body:**
+
+```json
+{
+  "token": "string (JWT token)",
+  "user": {
+    "_id": "string",
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string"
+  }
+}
+```
+
+### Example Successful Response
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+  "user": {
+    "_id": "64a6f76b8c1d5e001f3c1e3b",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+### Error Responses
+
+#### Authentication Errors
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+#### Validation Errors
+- **Status Code:** `400 Bad Request`
+- **Body:**
+
+```json
+{
+  "errors": [
+    {
+      "msg": "string (error message)",
+      "param": "string (field name)",
+      "location": "string (body)"
+    }
+  ]
+}
+```
+
+### Example Validation Error
+```json
+{
+  "errors": [
+    {
+      "msg": "Email is required",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
 ---
 
 ## Validation Rules
 - `email`: Must be a valid email format.
-- `fullname.firstname`: Minimum 3 characters.
 - `password`: Minimum 6 characters.
 
 ---
 
 ## Notes
-- Passwords are hashed before being stored in the database.
-- The `lastname` field in `fullname` is optional.
-- On successful registration, a JWT token is generated for authentication.
+- The `password` field is securely compared to the stored hash in the database.
+- On successful authentication, a JWT token is generated for session management.
+- Use the token in subsequent requests to access protected routes.
 
 ---
