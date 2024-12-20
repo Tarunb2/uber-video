@@ -245,15 +245,119 @@ The request body should be a JSON object with the following structure:
 
 ---
 
-## Validation Rules
-- `email`: Must be a valid email format.
-- `password`: Minimum 6 characters.
+# `/users/profile` Endpoint Documentation
+
+## Description
+The `/users/profile` endpoint retrieves the profile of the currently authenticated user.
 
 ---
 
-## Notes
-- The `password` field is securely compared to the stored hash in the database.
-- On successful authentication, a JWT token is generated for session management.
-- Use the token in subsequent requests to access protected routes.
+## Request
+
+### Method
+`GET`
+
+### URL
+`/users/profile`
+
+### Headers
+- `Authorization: Bearer <JWT token>`
+
+---
+
+## Response
+
+### Successful Response
+- **Status Code:** `200 OK`
+- **Body:**
+
+```json
+{
+  "_id": "string",
+  "fullname": {
+    "firstname": "string",
+    "lastname": "string"
+  },
+  "email": "string"
+}
+```
+
+### Example Successful Response
+```json
+{
+  "_id": "64a6f76b8c1d5e001f3c1e3b",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+}
+```
+
+### Error Responses
+
+#### Authentication Errors
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+
+```json
+{
+  "message": "Unauthorized access"
+}
+```
+
+---
+
+# `/users/logout` Endpoint Documentation
+
+## Description
+The `/users/logout` endpoint logs out the currently authenticated user by invalidating their JWT token.
+
+---
+
+## Request
+
+### Method
+`GET`
+
+### URL
+`/users/logout`
+
+### Headers
+- `Authorization: Bearer <JWT token>`
+- `Cookie: token=<JWT token>` (if using cookies)
+
+---
+
+## Response
+
+### Successful Response
+- **Status Code:** `200 OK`
+- **Body:**
+
+```json
+{
+  "message": "Logged out"
+}
+```
+
+### Example Successful Response
+```json
+{
+  "message": "Logged out"
+}
+```
+
+### Error Responses
+
+#### Authentication Errors
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+
+```json
+{
+  "message": "Unauthorized access"
+}
+```
 
 ---
