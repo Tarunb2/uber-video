@@ -167,3 +167,95 @@ Create a new captain account.
 
 ---
 
+## `/captains/login`
+### Description
+Authenticate an existing captain.
+
+### Request
+- **Method:** `POST`
+- **URL:** `/captains/login`
+- **Headers:** `Content-Type: application/json`
+- **Body:**
+  ```json
+  {
+    "email": "string (valid email)",
+    "password": "string (min 6 chars)"
+  }
+  ```
+
+### Response
+- **Success (200):**
+  ```json
+  {
+    "token": "string (JWT)",
+    "captain": {
+      "_id": "string",
+      "fullname": {
+        "firstname": "string",
+        "lastname": "string"
+      },
+      "email": "string",
+      "vehicle": {
+        "color": "string",
+        "plate": "string",
+        "capacity": "integer",
+        "vehicleType": "string"
+      }
+    }
+  }
+  ```
+- **Error (401):** Invalid email or password.
+
+---
+
+## `/captains/profile`
+### Description
+Retrieve the authenticated captain's profile.
+
+### Request
+- **Method:** `GET`
+- **URL:** `/captains/profile`
+- **Headers:** `Authorization: Bearer <JWT>`
+
+### Response
+- **Success (200):**
+  ```json
+  {
+    "captain": {
+      "_id": "string",
+      "fullname": {
+        "firstname": "string",
+        "lastname": "string"
+      },
+      "email": "string",
+      "vehicle": {
+        "color": "string",
+        "plate": "string",
+        "capacity": "integer",
+        "vehicleType": "string"
+      }
+    }
+  }
+  ```
+- **Error (401):** Unauthorized access.
+
+---
+
+## `/captains/logout`
+### Description
+Log out the authenticated captain.
+
+### Request
+- **Method:** `GET`
+- **URL:** `/captains/logout`
+- **Headers:** `Authorization: Bearer <JWT>`
+
+### Response
+- **Success (200):**
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+- **Error (401):** Unauthorized access.
+
