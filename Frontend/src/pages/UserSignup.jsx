@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { UserDataContext } from '../context/UserContext'
 
 const UserSignup = () => {
+    
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -9,18 +12,33 @@ const UserSignup = () => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
 
-    const submitHandler = (e) => {
+    const navigate = useNavigate()
+
+    const { user, setUser } = useContext(UserDataContext)
+
+
+    const submitHandler = async (e) => {
         e.preventDefault()
 
-        setUserData({
+       
+        const newUser = {
+            fullname: {
+                firstname: firstName,
+                lastname: lastName
+            },
             email: email,
-            password: password,
-            fullName: {
-                firstName: firstName,
-                lastName: lastName
-            }
-        })
-        console.log(userData)
+            password: password
+        }
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+
+        if (response.status === 201) {
+            const data = response.data
+
+            setUser(data.user)
+            localStorage.setItem('token', data.token)
+            navigate('/home')
+        }
 
         setEmail('')
         setPassword('')
@@ -43,7 +61,7 @@ const UserSignup = () => {
                     <input required value={email} onChange={(e) => setEmail(e.target.value)} className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border border-gray-400 w-full text-base placeholder:text-sm' type="email" placeholder='email@example.com' />
                     <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
                     <input required value={password} onChange={(e) => setPassword(e.target.value)} className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border border-gray-400 w-full text-base placeholder:text-sm' type="password" placeholder='password' />
-                    <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base'>Login</button>
+                    <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base'>Create account</button>
 
                 </form>
                 <p className='text-center'>Already have a Accout? <Link to='/login' className='text-green-700 font-medium'>Login here</Link></p>

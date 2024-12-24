@@ -140,7 +140,7 @@ Create a new captain account.
       "color": "string (min 3 chars)",
       "plate": "string (min 3 chars)",
       "capacity": "integer (min 1)",
-      "vehicleType": "string (car, motorcycle, bicycle)"
+      "vehicleType": "string (car, moto, auto)"
     }
   }
   ```
